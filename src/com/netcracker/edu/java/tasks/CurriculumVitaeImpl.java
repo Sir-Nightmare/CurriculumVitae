@@ -5,9 +5,17 @@ import java.util.NoSuchElementException;
 
 /**
  * Created by Sir Nightmare on 08/01/16.
+ * Class for CV
  */
 public class CurriculumVitaeImpl implements CurriculumVitae
 {
+    private String text;
+    private static final String PHONE_PATTERN =
+            "(\\(?([1-9][0-9]{2})\\)?[-. ]*)?([1-9][0-9]{2})[-. ]*(\\d{2})[-. ]*(\\d{2})(\\s*ext\\.?\\s*([0-9]+))?";
+
+    public CurriculumVitaeImpl() {
+    }
+
     /**
      * Sets the text (the main field of the CV).<br/>
      * Implementation note: The text should not be analyzed in this method.<br/>
@@ -16,7 +24,7 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public void setText(String text) {
-        
+        this.text=text;
     }
 
     /**
@@ -27,7 +35,10 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public String getText() throws IllegalStateException {
-        return null;
+        if (text==null){
+            throw new IllegalStateException();
+        }
+        return text;
     }
 
     /**
