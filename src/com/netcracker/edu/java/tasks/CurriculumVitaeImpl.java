@@ -1,7 +1,9 @@
 package com.netcracker.edu.java.tasks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.*;
 
 /**
  * Created by Sir Nightmare on 08/01/16.
@@ -9,7 +11,7 @@ import java.util.NoSuchElementException;
  */
 public class CurriculumVitaeImpl implements CurriculumVitae
 {
-    private String text;
+    private String cvText;
     private static final String PHONE_PATTERN =
             "(\\(?([1-9][0-9]{2})\\)?[-. ]*)?([1-9][0-9]{2})[-. ]*(\\d{2})[-. ]*(\\d{2})(\\s*ext\\.?\\s*([0-9]+))?";
 
@@ -24,7 +26,7 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public void setText(String text) {
-        this.text=text;
+        this.cvText=text;
     }
 
     /**
@@ -35,10 +37,10 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public String getText() throws IllegalStateException {
-        if (text==null){
+        if (cvText==null){
             throw new IllegalStateException();
         }
-        return text;
+        return cvText;
     }
 
     /**
@@ -53,6 +55,13 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public List<Phone> getPhones() throws IllegalStateException {
+        String text = getText();
+        List phones = new ArrayList();
+        Pattern p = Pattern.compile(PHONE_PATTERN);
+        Matcher m = p.matcher(text);
+
+
+
         return null;
     }
 
