@@ -3,17 +3,22 @@ package com.netcracker.edu.java.tasks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Sir Nightmare on 08/01/16.
  * Class for CV
  */
-public class CurriculumVitaeImpl implements CurriculumVitae
-{
+public class CurriculumVitaeImpl implements CurriculumVitae {
     private String cvText;
-    private static final String PHONE_PATTERN =
-            "(\\(?([1-9][0-9]{2})\\)?[-. ]*)?([1-9][0-9]{2})[-. ]*(\\d{2})[-. ]*(\\d{2})(\\s*ext\\.?\\s*([0-9]+))?";
+    public static final String FULL_NAME_PATTERN = "([A-Z][a-z]+\\.?\\s?){2,3}";
+    public static final String NAME_PATTERN = "(\\w+\\.?)\\s(\\w+\\.?)\\s?(\\w+\\.?)?";
+    private List<Phone> phones;
+    private String fullName;
+    private String firstName;
+    private String middleName;
+    private String lastName;
 
     public CurriculumVitaeImpl() {
     }
@@ -26,7 +31,7 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public void setText(String text) {
-        this.cvText=text;
+        this.cvText = text;
     }
 
     /**
@@ -37,7 +42,7 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public String getText() throws IllegalStateException {
-        if (cvText==null){
+        if (cvText == null) {
             throw new IllegalStateException();
         }
         return cvText;
@@ -55,14 +60,19 @@ public class CurriculumVitaeImpl implements CurriculumVitae
      */
     @Override
     public List<Phone> getPhones() throws IllegalStateException {
-        String text = getText();
-        List phones = new ArrayList();
         Pattern p = Pattern.compile(PHONE_PATTERN);
-        Matcher m = p.matcher(text);
-
-
-
-        return null;
+        Matcher m = p.matcher(getText());
+        phones = new ArrayList<>();
+        Phone phone;
+        while (m.find()) {
+            int aCode = -1;
+            int ext = -1;
+            if (m.group(2) != null) aCode = Integer.parseInt(m.group(2));
+            if (m.group(7) != null) ext = Integer.parseInt(m.group(7));
+            phone = new Phone(m.group(), aCode, ext);
+            phones.add(phone);
+        }
+        return phones;
     }
 
     /**
